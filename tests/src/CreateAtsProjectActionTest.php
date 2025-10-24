@@ -38,6 +38,7 @@ class CreateAtsProjectActionTest extends TestCase
         $atsProject = new AtsProject();
         $atsProject->setName('test');
         $atsProject->setManager($manager);
+        $atsProject->setActive(true);
 
         $this->entityManager->expects(self::once())
             ->method('flush');

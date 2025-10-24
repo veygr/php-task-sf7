@@ -25,6 +25,9 @@ class AtsProject
     )]
     private ?string $name = null;
 
+    #[ORM\Column]
+    private ?bool $active = null;
+
     #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
     private ?\DateTimeImmutable $createdAt = null;
 
@@ -47,6 +50,16 @@ class AtsProject
     public function setName(?string $name): void
     {
         $this->name = $name;
+    }
+
+    public function isActive(): ?bool
+    {
+        return $this->active;
+    }
+
+    public function setActive(?bool $active): void
+    {
+        $this->active = $active;
     }
 
     public function getCreatedAt(): ?\DateTimeImmutable
