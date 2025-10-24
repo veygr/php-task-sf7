@@ -1,9 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller;
 
-use App\Actions\CreateAtsProjectAction;
-use App\Actions\UpdateAtsProjectAction;
+use App\Actions\AtsProject\CreateAtsProjectAction;
+use App\Actions\AtsProject\UpdateAtsProjectAction;
 use App\Entity\AtsProject;
 use App\Form\AtsProjectType;
 use App\Repository\AtsProjectRepository;

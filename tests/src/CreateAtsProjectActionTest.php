@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Tests\src;
 
-use App\Actions\CreateAtsProjectAction;
+use App\Actions\AtsProject\CreateAtsProjectAction;
 use App\Actions\SendEmailAction;
 use App\Entity\AtsProject;
 use App\Entity\User;

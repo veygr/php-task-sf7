@@ -2,8 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Actions;
+namespace App\Actions\AtsProject;
 
+use App\Actions\SendEmailAction;
 use App\Entity\AtsProject;
 use Doctrine\ORM\EntityManagerInterface;
 
