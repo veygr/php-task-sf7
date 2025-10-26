@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Actions\AtsProject\CreateAtsProjectAction;
+use App\Actions\AtsProject\DeleteAtsProjectAction;
 use App\Actions\AtsProject\UpdateAtsProjectAction;
 use App\Entity\AtsProject;
 use App\Form\AtsProjectType;
@@ -92,6 +93,15 @@ final class AtsProjectController extends AbstractController
         return $this->render('ats/project/form.html.twig', [
             'form' => $form,
         ]);
+    }
+
+    #[Route('/project/delete/{id}', name: 'ats_project_delete', requirements: ['id' => '\d+'], methods: ['GET'])]
+    public function delete(
+        AtsProject $project,
+        DeleteAtsProjectAction $deleteAtsProjectAction
+    ): Response {
+        $deleteAtsProjectAction->execute($project);
+        return $this->redirectToRoute('ats_projects');
     }
 
     private function createUpdateForm(AtsProject $project): FormInterface

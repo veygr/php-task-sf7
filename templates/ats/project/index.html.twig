@@ -25,6 +25,7 @@
                                 <td class="py-3 px-4">{{ project.name }}</td>
                                 <td class="py-3 px-4">
                                     <a href="{{ path('ats_project', {'id':project.id}) }}" class="text-blue-500 hover:text-blue-700 mr-2">Details</a>
+                                    <a href="{{ path('ats_project_delete', {'id':project.id}) }}" class="text-blue-500 hover:text-blue-700 mr-2">Delete</a>
                                 </td>
                             </tr>
                         {% else %}
