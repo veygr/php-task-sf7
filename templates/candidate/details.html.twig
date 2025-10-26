@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<div class="container mx-auto px-4 py-8">
+    <div class="flex justify-center">
+        <div class="w-full max-w-4xl">
+            <div class="flex justify-between items-center mb-6">
+                <h1 class="text-2xl font-bold">Candidate</h1>
+            </div>
+            <div class="bg-white shadow-md rounded-lg overflow-hidden p-6">
+                <table class="min-w-full bg-white shadow-md rounded-lg overflow-hidden">
+                    <tbody class="divide-y divide-gray-200">
+                        <tr>
+                            <th class="pr-6 pl-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider bg-gray-100 w-1/3">Name</th>
+                            <td class="pr-6 pl-4 py-4 text-sm font-medium text-gray-900">{{ candidate.firstName }} {{ candidate.lastName }}</td>
+                        </tr>
+                        <tr>
+                            <th class="pr-6 pl-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider bg-gray-100 w-1/3">Email</th>
+                            <td class="pr-6 pl-4 py-4 text-sm font-medium text-gray-900">{{ candidate.email }}</td>
+                        </tr>
+                        <tr>
+                            <th class="pr-6 pl-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider bg-gray-100 w-1/3">Ats project</th>
+                            <td class="pr-6 pl-4 py-4 text-sm text-gray-500">{{ candidate.atsProject ? candidate.atsProject.name : 'No project assigned' }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="flex items-center justify-between mt-6">
+                    <a href="{{ path('candidate_edit', {'id':candidate.id}) }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                        Edit candidate
+                    </a>
+                    <a href="{{ path('ats_project', {'id': candidate.atsProject.id}) }}" class="text-blue-500 hover:text-blue-700">
+                        Back to ats project
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

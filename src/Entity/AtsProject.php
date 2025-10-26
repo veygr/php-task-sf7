@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\AtsProjectRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -36,6 +38,17 @@ class AtsProject
 
     #[ORM\ManyToOne]
     private ?User $manager = null;
+
+    /**
+     * @var Collection<int, Candidate>
+     */
+    #[ORM\OneToMany(targetEntity: Candidate::class, mappedBy: 'atsProject')]
+    private Collection $candidates;
+
+    public function __construct()
+    {
+        $this->candidates = new ArrayCollection();
+    }
 
     public function getId(): int
     {
@@ -90,6 +103,36 @@ class AtsProject
     public function setManager(?User $manager): static
     {
         $this->manager = $manager;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Candidate>
+     */
+    public function getCandidates(): Collection
+    {
+        return $this->candidates;
+    }
+
+    public function addCandidate(Candidate $candidate): static
+    {
+        if (!$this->candidates->contains($candidate)) {
+            $this->candidates->add($candidate);
+            $candidate->setAtsProject($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCandidate(Candidate $candidate): static
+    {
+        if ($this->candidates->removeElement($candidate)) {
+            // set the owning side to null (unless already changed)
+            if ($candidate->getAtsProject() === $this) {
+                $candidate->setAtsProject(null);
+            }
+        }
 
         return $this;
     }
