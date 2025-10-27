@@ -95,7 +95,7 @@ final class AtsProjectController extends AbstractController
         ]);
     }
 
-    #[Route('/project/delete/{id}', name: 'ats_project_delete', requirements: ['id' => '\d+'], methods: ['GET'])]
+    #[Route('/project/delete/{id}', name: 'ats_project_delete', requirements: ['id' => '\d+'], methods: ['DELETE'])]
     public function delete(
         AtsProject $project,
         DeleteAtsProjectAction $deleteAtsProjectAction

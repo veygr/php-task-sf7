@@ -8,7 +8,7 @@ use App\Entity\User;
 use App\Exceptions\User\UserNotFoundException;
 use App\Repository\UserRepository;
 
-class FindUserByEmailAction
+final readonly class FindUserByEmailAction
 {
     public function __construct(
         private UserRepository $userRepository
@@ -21,8 +21,7 @@ class FindUserByEmailAction
      */
     public function execute(string $email): User
     {
-        return
-            $this->userRepository->findOneBy(['email' => $email])
-            ?? throw new UserNotFoundException();
+        return $this->userRepository->findOneBy(['email' => $email])
+            ?? throw new UserNotFoundException($email);
     }
 }
