@@ -1,41 +1,50 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Actions\AtsProject;
 
 use App\Actions\SendEmailAction;
 use App\Entity\AtsProject;
 use Doctrine\ORM\EntityManagerInterface;
 
-readonly class DeleteAtsProjectAction
+final readonly class DeleteAtsProjectAction
 {
     public function __construct(
         private EntityManagerInterface $em,
-        private SendEmailAction        $sendEmailAction
+        private SendEmailAction $sendEmailAction
     ) {
     }
 
-    public function execute(
-        AtsProject $project
-    ): void {
-        foreach ($project->getCandidates() as $candidate) {
-            $this->em->remove($candidate);
-        }
+    public function execute(AtsProject $project): void
+    {
+        $this->removeCandidates($project);
+
         $this->em->remove($project);
         $this->em->flush();
 
-        $this->sendNotification($project);
+        $this->sendNotificationToManager($project);
     }
 
-    private function sendNotification(AtsProject $project): void
+    private function removeCandidates(AtsProject $project): void
     {
-        if(!$project->getManager()) {
+        foreach ($project->getCandidates() as $candidate) {
+            $this->em->remove($candidate);
+        }
+    }
+
+    private function sendNotificationToManager(AtsProject $project): void
+    {
+        $manager = $project->getManager();
+
+        if ($manager === null) {
             return;
         }
 
         $this->sendEmailAction->execute(
-            $project->getManager()->getEmail(),
+            $manager->getEmail(),
             'ATS project was deleted',
-            'ATS project was deleted: '. $project->getName()
+            sprintf('ATS project was deleted: %s', $project->getName())
         );
     }
 }

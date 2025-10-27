@@ -25,27 +25,44 @@ final readonly class CreateCandidateAction
         Candidate $candidate,
     ): void
     {
-        $project = $candidate->getAtsProject();
-        if (empty($project) || !$project->isActive()) {
-            throw new CreateProjectNotActiveException();
-        }
+        $this->validateProject($candidate);
 
         $this->em->persist($candidate);
         $this->em->flush();
 
-        $this->sendNotification($candidate);
+        $this->sendNotificationToProjectManager($candidate);
     }
 
-    private function sendNotification(Candidate $candidate): void
+    /**
+     * @throws CreateProjectNotActiveException
+     */
+    private function validateProject(Candidate $candidate): void
     {
-        if (!$candidate->getAtsProject()->getManager()) {
+        $project = $candidate->getAtsProject();
+
+        if ($project === null || !$project->isActive()) {
+            throw new CreateProjectNotActiveException();
+        }
+    }
+
+    private function sendNotificationToProjectManager(Candidate $candidate): void
+    {
+        $project = $candidate->getAtsProject();
+        $manager = $project?->getManager();
+
+        if ($manager === null) {
             return;
         }
 
         $this->sendEmailAction->execute(
-            $candidate->getAtsProject()->getManager()->getEmail(),
+            $manager->getEmail(),
             'New candidate in ATS project',
-            'New candidate in : ' . $candidate->getAtsProject()->getName() . ' - ' . $candidate->getFirstName() . ' ' . $candidate->getLastName(),
+            sprintf(
+                'New candidate in: %s - %s %s',
+                $project->getName(),
+                $candidate->getFirstName(),
+                $candidate->getLastName()
+            )
         );
     }
 }

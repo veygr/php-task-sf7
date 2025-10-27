@@ -13,30 +13,30 @@ final readonly class CreateAtsProjectAction {
         private EntityManagerInterface $em,
         private SendEmailAction $sendEmailAction
     ) {
-        //
     }
 
-    public function execute(
-        AtsProject $project
-    ): void {
+    public function execute(AtsProject $project): void
+    {
         $project->setCreatedAt(new \DateTimeImmutable());
 
         $this->em->persist($project);
         $this->em->flush();
 
-        $this->sendNotification($project);
+        $this->sendNotificationToManager($project);
     }
 
-    private function sendNotification(AtsProject $project): void
+    private function sendNotificationToManager(AtsProject $project): void
     {
-        if(!$project->getManager()) {
+        $manager = $project->getManager();
+
+        if ($manager === null) {
             return;
         }
 
         $this->sendEmailAction->execute(
-            $project->getManager()->getEmail(),
+            $manager->getEmail(),
             'New ATS project created',
-            'New ATS project created: '. $project->getName()
+            sprintf('New ATS project created: %s', $project->getName())
         );
     }
 }
