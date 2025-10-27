@@ -57,7 +57,7 @@ class CreateCandidateActionTest extends TestCase
 
         $this->sendEmailAction->expects(self::once())
             ->method('execute')
-            ->with('manager@example.com', 'New candidate in ATS project', 'New candidate in : New Project - John Doe');
+            ->with('manager@example.com', 'New candidate in ATS project', 'New candidate in: New Project - John Doe');
 
         $this->createCandidateAction->execute($this->candidate);
     }
